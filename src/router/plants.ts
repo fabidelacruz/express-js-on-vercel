@@ -35,6 +35,30 @@ router.get('/list', async (req, res) => {
     });
 })
 
+router.get('/recent', async (req, res) => {
+    const page = (req.query.page && parseInt(req.query.page.toString())) || 1
+    const limit = 20
+
+    const filter = {
+        createdAt: { $gte: new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000)) }
+    }
+
+    const total = await Plant.countDocuments(filter)
+
+    const plants = await Plant.find(filter)
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+
+    res.json({
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        content: plants,
+    });
+})
+
 router.get('/:id', async (req, res) => {
     const plant = await Plant.findById(req.params.id)
 
