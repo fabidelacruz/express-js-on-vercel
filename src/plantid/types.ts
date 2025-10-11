@@ -49,7 +49,7 @@ export interface PlantDetailsDTO {
 }
 
 export interface PlantTaxonomyDTO {
-    class?: string,
+    taxonomyClass?: string,
     genus?: string,
     order?: string,
     family?: string,

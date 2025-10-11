@@ -86,7 +86,7 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
             description: it.details?.description?.value || '',
             synonyms: it.details?.synonyms,
             taxonomy: it.details?.taxonomy && {
-                class: it.details?.taxonomy?.class,
+                taxonomyClass: it.details?.taxonomy?.taxonomyClass,
                 family: it.details?.taxonomy?.family,
                 genus: it.details?.taxonomy?.genus,
                 order: it.details?.taxonomy?.order,

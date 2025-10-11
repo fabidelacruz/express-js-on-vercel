@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import {Plant, Taxonomy, Watering} from "../model/plant.js";
 
 const taxonomySchema = new mongoose.Schema<Taxonomy>({
-    class: {type: String, required: true, unique: false},
+    taxonomyClass: {type: String, required: true, unique: false},
     genus: {type: String, required: false, unique: false},
     family: {type: String, required: false, unique: false},
     phylum: {type: String, required: false, unique: false},

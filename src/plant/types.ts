@@ -12,7 +12,7 @@ export interface PlantBaseDTO {
 export interface PlantCreateDTO extends PlantBaseDTO {}
 
 export interface TaxonomyDTO {
-    class: string,
+    taxonomyClass: string,
     genus?: string,
     family?: string,
     order?: string,

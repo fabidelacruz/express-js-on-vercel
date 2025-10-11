@@ -5,7 +5,7 @@ export const identificationMock = [
         imageUrl: "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/b32/0549ca7acfc14f40a325e8de90ad8b9fdbcff.jpeg",
         commonNames: ["níspero japonés", "nisperero del Japón", "níspero"],
         taxonomy: {
-            class: "Magnoliopsida",
+            taxonomyClass: "Magnoliopsida",
             genus: "Rhaphiolepis",
             order: "Rosales",
             family: "Rosaceae",
@@ -22,7 +22,7 @@ export const identificationMock = [
         imageUrl: "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/c91/39bab662ad4edd214040d4a001785e1f544d8.jpeg",
         commonNames: ["Zapotillos"],
         taxonomy: {
-            class: "Magnoliopsida",
+            taxonomyClass: "Magnoliopsida",
             genus: "Pouteria",
             order: "Ericales",
             family: "Sapotaceae",
@@ -39,7 +39,7 @@ export const identificationMock = [
         imageUrl: "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/766/a49b5f3dd563bd75e7fd77dbb7b93c6c9adcf.jpeg",
         commonNames: ["Ibá poí", "Higuerón"],
         taxonomy: {
-            class: "Magnoliopsida",
+            taxonomyClass: "Magnoliopsida",
             genus: "Ficus",
             order: "Rosales",
             family: "Moraceae",

@@ -1,5 +1,5 @@
 export interface Taxonomy {
-    class: string;
+    taxonomyClass: string;
     genus?: string;
     family?: string;
     phylum?: string;
