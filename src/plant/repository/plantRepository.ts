@@ -1,7 +1,7 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import {Plant, Taxonomy, Watering} from "../model/plant.js";
 
-const taxonomySchema = new mongoose.Schema({
+const taxonomySchema = new mongoose.Schema<Taxonomy>({
     class: {type: String, required: true, unique: false},
     genus: {type: String, required: false, unique: false},
     family: {type: String, required: false, unique: false},
@@ -10,7 +10,7 @@ const taxonomySchema = new mongoose.Schema({
     synonyms: {type: [String], required: false, unique: false},
 });
 
-const wateringSchema = new mongoose.Schema({
+const wateringSchema = new mongoose.Schema<Watering>({
     min: {type: Number, required: true, unique: false},
     max: {type: Number, required: true, unique: false},
 });
