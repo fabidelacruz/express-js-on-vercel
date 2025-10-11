@@ -1,6 +1,6 @@
 export const identificationMock = [
     {
-        externalId: "662e0f8d4202acfc",
+        id: "662e0f8d4202acfc",
         name: "Rhaphiolepis bibas",
         probability: 0.8843,
         images: [{
@@ -27,7 +27,7 @@ export const identificationMock = [
         moreInfoUrl: "https://es.wikipedia.org/wiki/Rhaphiolepis_bibas",
     },
     {
-        externalId: "f57c6c7e33d57d76",
+        id: "f57c6c7e33d57d76",
         name: "Pouteria",
         probability: 0.3279,
         images: [{
@@ -48,7 +48,7 @@ export const identificationMock = [
         moreInfoUrl: "https://es.wikipedia.org/wiki/Pouteria",
     },
     {
-        externalId: "9b781ff8be4b5e07",
+        id: "9b781ff8be4b5e07",
         name: "Ficus luschnathiana",
         probability: 0.0182,
         images: [{
