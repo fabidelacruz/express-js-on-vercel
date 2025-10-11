@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import {Plant, Taxonomy, Watering} from "../model/plant.js";
 
-const taxonomy = new mongoose.Schema({
+const taxonomySchema = new mongoose.Schema({
     class: {type: String, required: true, unique: false},
     genus: {type: String, required: false, unique: false},
     family: {type: String, required: false, unique: false},
@@ -9,7 +10,7 @@ const taxonomy = new mongoose.Schema({
     synonyms: {type: [String], required: false, unique: false},
 });
 
-const watering = new mongoose.Schema({
+const wateringSchema = new mongoose.Schema({
     min: {type: Number, required: true, unique: false},
     max: {type: Number, required: true, unique: false},
 });
@@ -21,8 +22,30 @@ const schema = new mongoose.Schema({
     commonNames: {type: [String], required: false, unique: false},
     description: {type: String, required: false, unique: false},
     synonyms: {type: [String], required: false, unique: false},
-    taxonomy: {type: taxonomy},
-    watering: {type: watering},
+    taxonomy: {type: taxonomySchema, required: false},
+    watering: {type: wateringSchema, required: false},
+}, {
+    timestamps: true,
 });
 
-export const Plant = mongoose.model("Plants", schema);
+schema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
+schema.set('toJSON', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        delete ret._id;
+    }
+});
+
+schema.set('toObject', {
+    virtuals: true,
+    versionKey: false,
+    transform: function (doc, ret) {
+        delete ret._id;
+    }
+});
+
+export const PlantRepository = mongoose.model<Plant>("Plants", schema as any);

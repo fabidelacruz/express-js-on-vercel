@@ -1,76 +1,65 @@
 import {Router} from 'express'
-import {Plant} from "../models/plant.js"
+import plantService from "../plant/service/service.js"
+import {PlantIdentificationRequest, PlantResponseDTO} from "../plant/types.js";
+import {AuthenticatedRequest, authMiddleware} from "../middlewares/auth.js";
 
 export const router = Router()
+router.use(authMiddleware)
 
-router.post('/', async (req, res) => {
-    const plant = await Plant.create({...req.body})
+router.post('/', async (req: AuthenticatedRequest, res) => {
+    const plant = await plantService.create(req.userId, {...req.body})
 
-    res.status(201).json(plant)
+    res.status(201).json(plant as PlantResponseDTO)
 })
 
-router.get('/list', async (req, res) => {
+router.get('/list', async (req: AuthenticatedRequest, res) => {
     const page = (req.query.page && parseInt(req.query.page.toString())) || 1
     const limit = 20
     const search = (req.query.q && req.query.q.toString()) || ''
 
-    const filter = search ? {
-        name: new RegExp(search, "i")
-    } : {}
-
-    const total = await Plant.countDocuments(filter)
-
-
-    const plants = await Plant.find(filter)
-        .sort({ name: 1 })
-        .skip((page - 1) * limit)
-        .limit(limit);
+    const result = await plantService.list({search, userId: req.userId}, page, limit)
 
     res.json({
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-        content: plants,
+        ...result,
+        content: result.content.map(it => it as PlantResponseDTO),
     });
 })
 
-router.get('/recent', async (req, res) => {
+router.get('/recent', async (req: AuthenticatedRequest, res) => {
     const page = (req.query.page && parseInt(req.query.page.toString())) || 1
     const limit = 20
 
     const filter = {
-        createdAt: { $gte: new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000)) }
+        createdAt: new Date(new Date().getTime() - (30 * 24 * 60 * 60 * 1000)),
+        userId: req.userId,
     }
 
-    const total = await Plant.countDocuments(filter)
-
-    const plants = await Plant.find(filter)
-        .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit);
+    const result = await plantService.list(filter, page, limit)
 
     res.json({
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-        content: plants,
+        ...result,
+        content: result.content.map(it => it as PlantResponseDTO),
     });
 })
 
-router.get('/:id', async (req, res) => {
-    const plant = await Plant.findById(req.params.id)
+router.get('/:id', async (req: AuthenticatedRequest, res) => {
+    const plant = await plantService.get(req.userId, req.params.id)
 
     if (plant) {
-        res.status(200).json(plant)
+        res.status(200).json(plant as PlantResponseDTO)
     } else {
         res.sendStatus(404)
     }
 })
 
-router.delete('/:id', async (req, res) => {
-    await Plant.deleteOne({_id: req.params.id})
+router.delete('/:id', async (req: AuthenticatedRequest, res) => {
+    await plantService.remove(req.userId, req.params.id)
 
     res.sendStatus(200)
+})
+
+router.post('/identify', async (req, res) => {
+    const results = await plantService.identify(req.body as PlantIdentificationRequest)
+
+    res.status(200).json(results)
 })
