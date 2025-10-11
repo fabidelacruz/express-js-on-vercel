@@ -20,6 +20,7 @@ export interface Plant {
     id: string;
     name: string;
     userId: string;
+    externalId: string;
     images: PlantImage[];
     commonNames?: string[];
     description?: string;

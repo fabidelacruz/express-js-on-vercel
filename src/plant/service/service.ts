@@ -101,7 +101,8 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
                 min: it.details?.watering?.min,
                 max: it.details?.watering?.max,
             },
-            probability: it.probability
+            probability: it.probability,
+            externalId: it.id,
         }
     }) || []
 }
