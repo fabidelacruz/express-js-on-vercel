@@ -1,9 +1,16 @@
 export const identificationMock = [
     {
+        externalId: "662e0f8d4202acfc",
         name: "Rhaphiolepis bibas",
         probability: 0.8843,
         images: [{
             url: "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/b32/0549ca7acfc14f40a325e8de90ad8b9fdbcff.jpeg"
+        },
+        {
+            url: "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/e63/ee1c405b78fa21f5107cf63a064ac1e1ae01a.jpeg"
+        },
+        {
+            url: "https://plant.id/media/imgs/21d84ed3ead945d4a6ad28eb8b0ea562.jpg"
         }],
         commonNames: ["níspero japonés", "nisperero del Japón", "níspero"],
         taxonomy: {
@@ -20,6 +27,7 @@ export const identificationMock = [
         moreInfoUrl: "https://es.wikipedia.org/wiki/Rhaphiolepis_bibas",
     },
     {
+        externalId: "f57c6c7e33d57d76",
         name: "Pouteria",
         probability: 0.3279,
         images: [{
@@ -40,6 +48,7 @@ export const identificationMock = [
         moreInfoUrl: "https://es.wikipedia.org/wiki/Pouteria",
     },
     {
+        externalId: "9b781ff8be4b5e07",
         name: "Ficus luschnathiana",
         probability: 0.0182,
         images: [{

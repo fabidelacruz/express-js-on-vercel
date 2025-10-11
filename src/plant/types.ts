@@ -1,4 +1,5 @@
 export interface PlantBaseDTO {
+    externalId: string,
     name:  string,
     images: PlantImageDTO[],
     commonNames?: string[],

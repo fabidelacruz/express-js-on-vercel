@@ -20,6 +20,7 @@ const plantImageSchema = new mongoose.Schema<PlantImage>({
 });
 
 const schema = new mongoose.Schema<Plant>({
+    externalId: {type: String, required: true, unique: false},
     name: {type: String, required: true, unique: false},
     userId: {type: String, required: true, unique: false},
     images: {type: [plantImageSchema], required: false, unique: false},
