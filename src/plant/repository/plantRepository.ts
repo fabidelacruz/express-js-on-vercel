@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {Plant, Taxonomy, Watering} from "../model/plant.js";
+import {Plant, PlantImage, Taxonomy, Watering} from "../model/plant.js";
 
 const taxonomySchema = new mongoose.Schema<Taxonomy>({
     taxonomyClass: {type: String, required: true, unique: false},
@@ -15,10 +15,14 @@ const wateringSchema = new mongoose.Schema<Watering>({
     max: {type: Number, required: true, unique: false},
 });
 
+const plantImageSchema = new mongoose.Schema<PlantImage>({
+    url: {type: String, required: true, unique: false},
+});
+
 const schema = new mongoose.Schema<Plant>({
     name: {type: String, required: true, unique: false},
     userId: {type: String, required: true, unique: false},
-    imageUrl: {type: String, required: false, unique: false},
+    images: {type: [plantImageSchema], required: false, unique: false},
     commonNames: {type: [String], required: false, unique: false},
     description: {type: String, required: false, unique: false},
     synonyms: {type: [String], required: false, unique: false},

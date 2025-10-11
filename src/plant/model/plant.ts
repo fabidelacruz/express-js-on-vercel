@@ -12,11 +12,15 @@ export interface Watering {
     max: number;
 }
 
+export interface PlantImage {
+    url: string,
+}
+
 export interface Plant {
     id: string;
     name: string;
     userId: string;
-    imageUrl?: string;
+    images: PlantImage[];
     commonNames?: string[];
     description?: string;
     synonyms?: string[];

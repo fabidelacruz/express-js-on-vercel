@@ -81,7 +81,11 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
     return identificationResponse.result?.classification?.suggestions?.map(it => {
         return {
             name: it.name,
-            imageUrl: it.similar_images?.[0]?.url || '',
+            images: it.similar_images?.map(it => {
+                return {
+                    url: it.url
+                }
+            }),
             commonNames: it.details?.common_names,
             description: it.details?.description?.value || '',
             synonyms: it.details?.synonyms,

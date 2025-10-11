@@ -1,12 +1,16 @@
 export interface PlantBaseDTO {
     name:  string,
-    imageUrl: string,
+    images: PlantImageDTO[],
     commonNames?: string[],
     description?: string,
     synonyms?: string[],
     taxonomy: TaxonomyDTO,
     watering: WateringDTO,
     moreInfoUrl?: string,
+}
+
+export interface PlantImageDTO {
+    url: string,
 }
 
 export interface PlantCreateDTO extends PlantBaseDTO {}
