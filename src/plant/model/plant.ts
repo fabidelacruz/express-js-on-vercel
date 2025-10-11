@@ -22,4 +22,5 @@ export interface Plant {
     synonyms?: string[];
     taxonomy?: Taxonomy;
     watering?: Watering;
+    moreInfoUrl?: string;
 }

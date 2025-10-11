@@ -15,7 +15,7 @@ const wateringSchema = new mongoose.Schema<Watering>({
     max: {type: Number, required: true, unique: false},
 });
 
-const schema = new mongoose.Schema({
+const schema = new mongoose.Schema<Plant>({
     name: {type: String, required: true, unique: false},
     userId: {type: String, required: true, unique: false},
     imageUrl: {type: String, required: false, unique: false},
@@ -24,6 +24,7 @@ const schema = new mongoose.Schema({
     synonyms: {type: [String], required: false, unique: false},
     taxonomy: {type: taxonomySchema, required: false},
     watering: {type: wateringSchema, required: false},
+    moreInfoUrl: {type: String, required: false, unique: false},
 }, {
     timestamps: true,
 });

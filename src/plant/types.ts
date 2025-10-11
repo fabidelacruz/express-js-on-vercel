@@ -6,6 +6,7 @@ export interface PlantBaseDTO {
     synonyms?: string[],
     taxonomy: TaxonomyDTO,
     watering: WateringDTO,
+    moreInfoUrl?: string,
 }
 
 export interface PlantCreateDTO extends PlantBaseDTO {}
