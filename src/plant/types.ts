@@ -1,8 +1,6 @@
 export interface PlantBaseDTO {
-    id?: string,
     externalId: string,
     name:  string,
-    probability: number,
     images?: PlantImageDTO[],
     commonNames?: string[],
     description?: string,
@@ -22,6 +20,8 @@ export interface PlantImageDTO {
     url: string,
 }
 
+export interface PlantCreateDTO extends PlantBaseDTO {}
+
 export interface TaxonomyDTO {
     taxonomyClass?: string,
     genus?: string,
@@ -36,8 +36,16 @@ export interface WateringDTO {
     max?: number,
 }
 
+export interface PlantResponseDTO extends PlantBaseDTO {
+    id: string
+}
+
 export interface PlantIdentificationRequest {
     images: string[],
     latitude?: number,
     longitude?: number,
+}
+
+export interface PlantIdentificationResponse extends PlantBaseDTO {
+    probability?: number,
 }
