@@ -8,7 +8,6 @@ export interface PlantIdRequest {
 export interface PlantIdResponse {
     access_token?: string,
     result?: PlantResultDTO,
-
 }
 
 export interface PlantResultDTO {
@@ -45,11 +44,17 @@ export interface PlantDetailsDTO {
     url?: string,
     description?: PlantDescriptionDTO,
     synonyms?: string[],
-    watering?: PlantWateringDTO
+    watering?: PlantWateringDTO,
+    propagation_methods?: string[],
+    best_light_condition?: string,
+    common_uses?: string,
+    cultural_significance?: string,
+    toxicity?: string,
+    best_watering?: string
 }
 
 export interface PlantTaxonomyDTO {
-    taxonomyClass?: string,
+    class?: string,
     genus?: string,
     order?: string,
     family?: string,

@@ -4,7 +4,6 @@ export interface Taxonomy {
     family?: string;
     phylum?: string;
     kingdom?: string;
-    synonyms?: string[];
 }
 
 export interface Watering {
@@ -13,7 +12,7 @@ export interface Watering {
 }
 
 export interface PlantImage {
-    url: string,
+    url: string;
 }
 
 export interface Plant {
@@ -28,4 +27,10 @@ export interface Plant {
     taxonomy?: Taxonomy;
     watering?: Watering;
     moreInfoUrl?: string;
+    propagationMethods?: string[];
+    bestLightCondition?: string;
+    commonUses?: string;
+    culturalSignificance?: string;
+    toxicity?: string;
+    bestWatering?: string;
 }

@@ -19,7 +19,7 @@ client.interceptors.request.use(
 const identify = async (request: PlantIdRequest): Promise<PlantIdResponse> => {
     const response = await client.post('/identification', request, {
         params: {
-            details: "common_names,scientific_name,synonyms,url,description,taxonomy,rank,watering",
+            details: "common_names,scientific_name,synonyms,url,description,taxonomy,propagation_methods,watering,best_watering,best_light_condition,common_uses,toxicity,gpt,cultural_significance",
             language: "es"
         }
     })

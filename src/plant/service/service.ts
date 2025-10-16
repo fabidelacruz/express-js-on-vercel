@@ -80,17 +80,19 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
 
     return identificationResponse.result?.classification?.suggestions?.map(it => {
         return {
+            externalId: it.id,
             name: it.name,
+            probability: it.probability,
             images: it.similar_images?.map(it => {
                 return {
                     url: it.url
                 }
-            }),
+            }) || [],
             commonNames: it.details?.common_names,
             description: it.details?.description?.value || '',
-            synonyms: it.details?.synonyms,
+            synonyms: it.details?.synonyms || [],
             taxonomy: it.details?.taxonomy && {
-                taxonomyClass: it.details?.taxonomy?.taxonomyClass,
+                taxonomyClass: it.details?.taxonomy?.class,
                 family: it.details?.taxonomy?.family,
                 genus: it.details?.taxonomy?.genus,
                 order: it.details?.taxonomy?.order,
@@ -101,8 +103,12 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
                 min: it.details?.watering?.min,
                 max: it.details?.watering?.max,
             },
-            probability: it.probability,
-            externalId: it.id,
+            propagationMethods: it.details?.propagation_methods || [],
+            bestLightCondition: it.details?.best_light_condition,
+            commonUses: it.details?.common_uses,
+            culturalSignificance: it.details?.cultural_significance,
+            toxicity: it.details?.toxicity,
+            bestWatering: it.details?.best_watering,
         }
     }) || []
 }

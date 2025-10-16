@@ -20,9 +20,9 @@ const plantImageSchema = new mongoose.Schema<PlantImage>({
 });
 
 const schema = new mongoose.Schema<Plant>({
+    userId: {type: String, required: true, unique: false},
     externalId: {type: String, required: true, unique: false},
     name: {type: String, required: true, unique: false},
-    userId: {type: String, required: true, unique: false},
     images: {type: [plantImageSchema], required: false, unique: false},
     commonNames: {type: [String], required: false, unique: false},
     description: {type: String, required: false, unique: false},
@@ -30,6 +30,12 @@ const schema = new mongoose.Schema<Plant>({
     taxonomy: {type: taxonomySchema, required: false},
     watering: {type: wateringSchema, required: false},
     moreInfoUrl: {type: String, required: false, unique: false},
+    propagationMethods: {type: [String], required: false, unique: false},
+    bestLightCondition: {type: String, required: false, unique: false},
+    commonUses: {type: String, required: false, unique: false},
+    culturalSignificance: {type: String, required: false, unique: false},
+    toxicity: {type: String, required: false, unique: false},
+    bestWatering: {type: String, required: false, unique: false},
 }, {
     timestamps: true,
 });
