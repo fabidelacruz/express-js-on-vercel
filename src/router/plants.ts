@@ -13,53 +13,6 @@ router.post('/', async (req: AuthenticatedRequest, res) => {
 })
 
 router.get('/list', async (req: AuthenticatedRequest, res) => {
-    console.log('Calling /plants/list for userId:', req.userId);
-
-    // --- Mocked Data ---
-    // The real implementation is commented out below.
-    const mockPlants = [
-        {
-            id: '60d21b4667d0d8992e610c85',
-            name: 'Monstera Deliciosa',
-            userId: req.userId, // Use the userId from the request
-            externalId: 'ext-1',
-            images: [{ url: 'https://example.com/monstera.jpg' }],
-            commonNames: ['Swiss Cheese Plant'],
-            description: 'A popular and easy-to-care-for houseplant.',
-        },
-        {
-            id: '60d21b4667d0d8992e610c86',
-            name: 'Ficus Lyrata',
-            userId: req.userId,
-            externalId: 'ext-2',
-            images: [{ url: 'https://example.com/ficus.jpg' }],
-            commonNames: ['Fiddle Leaf Fig'],
-            description: 'A beautiful plant with large, violin-shaped leaves.',
-        },
-        {
-            id: '60d21b4667d0d8992e610c87',
-            name: 'Sansevieria Trifasciata',
-            userId: req.userId,
-            externalId: 'ext-3',
-            images: [{ url: 'https://example.com/sansevieria.jpg' }],
-            commonNames: ['Snake Plant', "Mother-in-Law's Tongue"],
-            description: 'A very hardy plant that is difficult to kill.',
-        },
-    ];
-
-    const page = (req.query.page && parseInt(req.query.page.toString())) || 1;
-
-    res.json({
-        page,
-        limit: 20,
-        total: mockPlants.length,
-        totalPages: 1,
-        content: mockPlants,
-    });
-
-    /*
-    // --- Real Implementation ---
-    // Uncomment this block when persistence is ready.
     const page = (req.query.page && parseInt(req.query.page.toString())) || 1
     const limit = 20
     const search = (req.query.q && req.query.q.toString()) || ''
@@ -70,7 +23,6 @@ router.get('/list', async (req: AuthenticatedRequest, res) => {
         ...result,
         content: result.content.map(it => it as PlantResponseDTO),
     });
-    */
 })
 
 router.get('/recent', async (req: AuthenticatedRequest, res) => {
