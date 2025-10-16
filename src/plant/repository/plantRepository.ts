@@ -7,7 +7,6 @@ const taxonomySchema = new mongoose.Schema<Taxonomy>({
     family: {type: String, required: false, unique: false},
     phylum: {type: String, required: false, unique: false},
     kingdom: {type: String, required: false, unique: false},
-    synonyms: {type: [String], required: false, unique: false},
 });
 
 const wateringSchema = new mongoose.Schema<Watering>({
