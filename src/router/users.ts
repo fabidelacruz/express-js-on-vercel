@@ -8,5 +8,5 @@ router.use(authMiddleware)
 router.post('/notification/token', async (req: AuthenticatedRequest, res) => {
     await usersService.updateNotificationToken(req.userId, req.body.token)
 
-    res.status(200)
+    res.status(200).send()
 })
