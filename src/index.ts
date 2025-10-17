@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import {connectDB} from './database/db.js'
 import {router as plantsRouter} from './router/plants.js'
+import {router as usersRouter} from './router/users.js'
 
 await connectDB();
 const app = express()
@@ -21,6 +22,7 @@ app.get('/healthz', (req, res) => {
 })
 
 app.use('/plants', plantsRouter)
+app.use('/users', usersRouter)
 
 app.use((req, res) => res.sendStatus(404));
 
