@@ -18,6 +18,7 @@ const getAndRefreshUser = async (userId: string) => {
             name: userRecord.displayName,
             email: userRecord.email,
             photoUrl: userRecord.photoURL,
+            lastActivity: new Date(),
         }, {upsert: true, new: true, setDefaultsOnInsert: true});
     } else {
         return getUserByUid(userId)

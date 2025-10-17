@@ -6,6 +6,7 @@ const schema = new mongoose.Schema({
     email: {type: String, required: false, unique: false},
     photoUrl: {type: String, required: false, unique: false},
     notificationToken: {type: String, required: false, unique: false},
+    lastActivity: {type: Date, required: false, unique: false},
 }, {
     timestamps: true,
 });
