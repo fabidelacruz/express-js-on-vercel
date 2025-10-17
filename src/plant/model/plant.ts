@@ -1,6 +1,7 @@
 export interface Taxonomy {
     taxonomyClass: string;
     genus?: string;
+    order?: string;
     family?: string;
     phylum?: string;
     kingdom?: string;

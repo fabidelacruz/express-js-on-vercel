@@ -4,6 +4,7 @@ import {Plant, PlantImage, Taxonomy, Watering} from "../model/plant.js";
 const taxonomySchema = new mongoose.Schema<Taxonomy>({
     taxonomyClass: {type: String, required: true, unique: false},
     genus: {type: String, required: false, unique: false},
+    order: {type: String, required: false, unique: false},
     family: {type: String, required: false, unique: false},
     phylum: {type: String, required: false, unique: false},
     kingdom: {type: String, required: false, unique: false},
