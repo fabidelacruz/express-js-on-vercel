@@ -1,4 +1,7 @@
+export type MessageType = 'remember'
+
 export interface MessageRequest {
+    type: MessageType,
     title: string,
     body: string,
     imageUrl?: string,
