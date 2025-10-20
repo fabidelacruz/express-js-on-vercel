@@ -10,19 +10,23 @@ export const authMiddleware = async (
     res: Response,
     next: NextFunction
 ) => {
-    const authHeader = req.headers['x-client-id'];
-    if (!authHeader) {
-        return res.status(401).send();
+    try {
+        const authHeader = req.headers['x-client-id'];
+        if (!authHeader) {
+            return res.status(401).send();
+        }
+
+        const userId = Array.isArray(authHeader) ? authHeader[0] : authHeader;
+
+        const userRecord = await userService.getAndRefreshUser(userId);
+        if (userRecord === null) {
+            return res.status(401).send();
+        }
+
+        req.userId = userId;
+
+        next();
+    } catch (e) {
+        return res.sendStatus(500)
     }
-
-    const userId = Array.isArray(authHeader) ? authHeader[0] : authHeader;
-
-    const userRecord = await userService.getAndRefreshUser(userId);
-    if (userRecord === null) {
-        return res.status(401).send();
-    }
-
-    req.userId = userId;
-
-    next();
 };

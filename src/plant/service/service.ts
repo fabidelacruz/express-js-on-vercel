@@ -53,7 +53,10 @@ const list = async (params: SearchParams, page: number = 1, limit: number = 20):
 }
 
 const get = async (id: string, userId: string) => {
-    const plant = await PlantRepository.findById(id)
+    const plant = await PlantRepository.findOne({
+        _id: id,
+        userId: userId
+    })
 
     return plant.toObject()
 }

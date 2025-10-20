@@ -23,11 +23,11 @@ export const getUser = async (uid: string) => {
 export const sendMessage = async (destination: string, request: MessageRequest): Promise<MessageResponse> => {
     try {
         const message: Message = {
-            data: request.data,
-            notification: {
+            data: {
+                ...request.data,
                 title: request.title,
                 body: request.body,
-                imageUrl: request.imageUrl,
+                type: request.type,
             },
             token: destination,
         }
@@ -37,5 +37,4 @@ export const sendMessage = async (destination: string, request: MessageRequest):
     } catch (e) {
         return {success: false, error: e}
     }
-
 }

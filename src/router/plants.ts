@@ -43,7 +43,7 @@ router.get('/recent', async (req: AuthenticatedRequest, res) => {
 })
 
 router.get('/:id', async (req: AuthenticatedRequest, res) => {
-    const plant = await plantService.get(req.userId, req.params.id)
+    const plant = await plantService.get(req.params.id, req.userId)
 
     if (plant) {
         res.status(200).json(plant as PlantResponseDTO)
