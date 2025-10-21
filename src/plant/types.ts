@@ -1,6 +1,18 @@
+export interface PlantIdentificationRequest {
+    images: string[],
+    latitude?: number,
+    longitude?: number,
+}
+
+export interface PlantIdentificationResponse {
+    plant_results: PlantBaseDTO[],
+    is_plant: IsPlantDTO
+}
+
 export interface PlantBaseDTO {
     externalId: string,
     name:  string,
+    probability?: number,
     images?: PlantImageDTO[],
     commonNames?: string[],
     description?: string,
@@ -40,12 +52,8 @@ export interface PlantResponseDTO extends PlantBaseDTO {
     id: string
 }
 
-export interface PlantIdentificationRequest {
-    images: string[],
-    latitude?: number,
-    longitude?: number,
-}
-
-export interface PlantIdentificationResponse extends PlantBaseDTO {
+export interface IsPlantDTO {
     probability?: number,
+    threshold?: number,
+    binary?: boolean
 }

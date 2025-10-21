@@ -65,7 +65,7 @@ const remove = async (userId: string, id: string) => {
     await PlantRepository.deleteOne({_id: id, userId: userId})
 }
 
-const identify = async (request: PlantIdentificationRequest): Promise<PlantIdentificationResponse[]> => {
+const identify = async (request: PlantIdentificationRequest): Promise<PlantIdentificationResponse> => {
     const useMock = Boolean(await configService.getConfigValue('plantid.mock', 'true'))
 
     if (useMock) {
@@ -81,7 +81,13 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
 
     const identificationResponse = await client.identify(plantIdRequest)
 
-    return identificationResponse.result?.classification?.suggestions?.map(it => {
+    const isPlant = identificationResponse.result?.is_plant || {
+        probability: 0,
+        threshold: 0.5,
+        binary: false
+    }
+
+    const plantResults = identificationResponse.result?.classification?.suggestions?.map(it => {
         return {
             externalId: it.id,
             name: it.name,
@@ -114,6 +120,11 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
             bestWatering: it.details?.best_watering,
         }
     }) || []
+
+    return {
+        plant_results: plantResults,
+        is_plant: isPlant
+    }
 }
 
 export default {
