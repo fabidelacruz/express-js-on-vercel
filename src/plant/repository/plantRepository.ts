@@ -36,6 +36,7 @@ const schema = new mongoose.Schema<Plant>({
     culturalSignificance: {type: String, required: false, unique: false},
     toxicity: {type: String, required: false, unique: false},
     bestWatering: {type: String, required: false, unique: false},
+    favourite: {type: Boolean, required: false, default: false},
 }, {
     timestamps: true,
 });

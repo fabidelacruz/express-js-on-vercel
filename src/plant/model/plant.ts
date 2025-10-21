@@ -34,4 +34,5 @@ export interface Plant {
     culturalSignificance?: string;
     toxicity?: string;
     bestWatering?: string;
+    favourite?: boolean;
 }

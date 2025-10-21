@@ -1,6 +1,9 @@
 import {PlantRepository} from "../repository/plantRepository.js";
+import {WateringReminderRepository} from "../repository/wateringReminderRepository.js";
 import {PlantCreateDTO, PlantIdentificationRequest, PlantIdentificationResponse} from "../types.js";
+import {WateringReminderCreateDTO} from "../types.js";
 import {Plant} from "../model/plant.js";
+import {WateringReminder} from "../model/wateringReminder.js";
 import {PagedResponse} from "../../dto/types.js";
 import configService from "../../config/service/configService.js";
 import client from "../../plantid/client.js";
@@ -11,6 +14,7 @@ interface SearchParams {
     search?: string,
     createdAt?: Date,
     userId: string,
+    favourites?: boolean,
 }
 
 const create = async (userId: string, request: PlantCreateDTO): Promise<Plant> => {
@@ -32,6 +36,10 @@ const list = async (params: SearchParams, page: number = 1, limit: number = 20):
         filter.createdAt = {
             $gte: params.createdAt
         }
+    }
+
+    if (params.favourites) {
+        filter.favourite = params.favourites
     }
 
     const total = await PlantRepository.countDocuments(filter)
@@ -58,7 +66,7 @@ const get = async (id: string, userId: string) => {
         userId: userId
     })
 
-    return plant.toObject()
+    return plant ? plant.toObject() : null
 }
 
 const remove = async (userId: string, id: string) => {
@@ -67,7 +75,6 @@ const remove = async (userId: string, id: string) => {
 
 const identify = async (request: PlantIdentificationRequest): Promise<PlantIdentificationResponse> => {
     const useMock = Boolean(await configService.getConfigValue('plantid.mock', 'true'))
-
     if (useMock) {
         return identificationMock
     }
@@ -127,10 +134,96 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
     }
 }
 
+
+// ********************* Plantas Favoritas y Recordatorios ****************************
+const setFavourite = async (userId: string, plantId: string): Promise<number> => {
+    const result = await PlantRepository.updateOne(
+        { _id: plantId, userId: userId },
+        { $set: { favourite: true } }
+    );
+
+    console.log('Set favourite result:', result);
+
+    return result.matchedCount;
+}
+
+const unSetFavourite = async (userId: string, plantId: string): Promise<number> => {
+    const result = await PlantRepository.updateOne(
+        { _id: plantId, userId: userId },
+        { $set: { favourite: false } }
+    );
+
+    return result.matchedCount;
+}
+
+const wateringRemindersList = async (userId: string, page: number = 1, limit: number = 20): Promise<PagedResponse<WateringReminder>> => {
+    const filter: any = {
+        userId: userId,
+        checked: false,
+    }
+
+    const total = await WateringReminderRepository.countDocuments(filter)
+
+    const reminders = await WateringReminderRepository.find(filter)
+        .sort({createdAt: -1})
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean()
+
+    return {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        content: reminders,
+    }
+}
+
+const checkWaterReminder = async (userId: string, reminderId: string): Promise<number> => {
+    const result = await WateringReminderRepository.updateOne(
+        { _id: reminderId, userId: userId },
+        { $set: { checked: true } }
+    );
+
+    return result.matchedCount;
+}
+
+const createWaterReminder = async (userId: string, request: WateringReminderCreateDTO): Promise<WateringReminder> => {
+    console.log('Creating watering reminder for userId:', userId, 'with request:', {...request, userId});
+    const reminder = await WateringReminderRepository.create({...request, userId})
+    return reminder.toObject();
+}
+
+const getWaterReminder = async (userId: string, reminderId: string): Promise<WateringReminder | null> => {
+    const reminder = await WateringReminderRepository.findOne({
+        _id: reminderId,
+        userId: userId
+    })
+
+    return reminder ? reminder.toObject() : null
+}
+
+const deleteWaterReminder = async (userId: string, reminderId: string): Promise<void> => {
+    await WateringReminderRepository.deleteOne({_id: reminderId, userId: userId})
+}
+
+const deleteWaterRemindersOfPlant = async (userId: string, plantId: string): Promise<void> => {
+    await WateringReminderRepository.deleteMany({ plantId: plantId, userId: userId })
+}
+
+
 export default {
     create,
     get,
     identify,
     list,
     remove,
+    setFavourite,
+    unSetFavourite,
+    wateringRemindersList,
+    getWaterReminder,
+    checkWaterReminder,
+    createWaterReminder,
+    deleteWaterReminder,
+    deleteWaterRemindersOfPlant,
 }

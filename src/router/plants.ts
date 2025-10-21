@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import plantService from "../plant/service/service.js"
-import {PlantIdentificationRequest, PlantResponseDTO} from "../plant/types.js";
+import {PlantIdentificationRequest, PlantResponseDTO, WateringReminderResponseDTO} from "../plant/types.js";
 import {AuthenticatedRequest, authMiddleware} from "../middlewares/auth.js";
 
 export const router = Router()
@@ -16,8 +16,9 @@ router.get('/list', async (req: AuthenticatedRequest, res) => {
     const page = (req.query.page && parseInt(req.query.page.toString())) || 1
     const limit = 20
     const search = (req.query.q && req.query.q.toString()) || ''
+    const favourites = req.query.favourites === 'true' ? true : null
 
-    const result = await plantService.list({search, userId: req.userId}, page, limit)
+    const result = await plantService.list({search, userId: req.userId, favourites}, page, limit)
 
     res.json({
         ...result,
@@ -53,6 +54,7 @@ router.get('/:id', async (req: AuthenticatedRequest, res) => {
 })
 
 router.delete('/:id', async (req: AuthenticatedRequest, res) => {
+    await plantService.deleteWaterRemindersOfPlant(req.userId, req.params.id)
     await plantService.remove(req.userId, req.params.id)
 
     res.sendStatus(200)
@@ -62,4 +64,55 @@ router.post('/identify', async (req: AuthenticatedRequest, res) => {
     const results = await plantService.identify(req.body as PlantIdentificationRequest)
 
     res.status(200).json(results)
+})
+
+
+router.get('/watering-reminders/list', async (req: AuthenticatedRequest, res) => {
+    const page = (req.query.page && parseInt(req.query.page.toString())) || 1
+    const limit = 20
+
+    const result = await plantService.wateringRemindersList(req.userId, page, limit)
+
+    res.json({
+        ...result,
+        content: result.content.map(it => it as WateringReminderResponseDTO),
+    });
+})
+
+router.post('/watering-reminders', async (req: AuthenticatedRequest, res) => {
+    const reminder = await plantService.createWaterReminder(req.userId, {...req.body})
+    res.status(201).json(reminder as WateringReminderResponseDTO)
+})
+
+router.patch('/watering-reminders/:id/check', async (req: AuthenticatedRequest, res) => {
+    const success = await plantService.checkWaterReminder(req.userId, req.params.id);
+    res.sendStatus(success > 0 ? 200 : 404);
+})
+
+router.get('/watering-reminders/:id', async (req: AuthenticatedRequest, res) => {
+    const reminder = await plantService.getWaterReminder(req.userId, req.params.id)
+    
+    if (reminder) {
+        res.status(200).json(reminder as WateringReminderResponseDTO)
+    } else {
+        res.sendStatus(404)
+    }
+})
+
+router.delete('/watering-reminders/:id', async (req: AuthenticatedRequest, res) => {
+    await plantService.deleteWaterReminder(req.userId, req.params.id)
+    res.sendStatus(200)
+})
+
+router.patch('/:id/favourite', async (req: AuthenticatedRequest, res) => {
+    const { favourite } = req.body;
+    let success: number;
+    
+    if (favourite) {
+        success = await plantService.setFavourite(req.userId, req.params.id);
+    } else {
+        success = await plantService.unSetFavourite(req.userId, req.params.id);
+    }
+    
+    res.sendStatus(success > 0 ? 200 : 404);
 })

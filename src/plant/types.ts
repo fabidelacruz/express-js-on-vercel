@@ -26,6 +26,7 @@ export interface PlantBaseDTO {
     culturalSignificance?: string,
     toxicity?: string,
     bestWatering?: string
+    favourite?: boolean
 }
 
 export interface PlantImageDTO {
@@ -56,4 +57,19 @@ export interface IsPlantDTO {
     probability?: number,
     threshold?: number,
     binary?: boolean
+}
+
+
+export interface WateringReminderBaseDTO {
+    plantId: string,
+    plantName: string,
+    plantImageUrl: string,
+    date: Date,
+    checked: boolean
+}
+
+export interface WateringReminderCreateDTO extends WateringReminderBaseDTO {}
+
+export interface WateringReminderResponseDTO extends WateringReminderBaseDTO {
+    id: string
 }
