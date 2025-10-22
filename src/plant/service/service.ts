@@ -142,8 +142,6 @@ const setFavourite = async (userId: string, plantId: string): Promise<number> =>
         { $set: { favourite: true } }
     );
 
-    console.log('Set favourite result:', result);
-
     return result.matchedCount;
 }
 
@@ -165,17 +163,23 @@ const wateringRemindersList = async (userId: string, page: number = 1, limit: nu
     const total = await WateringReminderRepository.countDocuments(filter)
 
     const reminders = await WateringReminderRepository.find(filter)
-        .sort({createdAt: -1})
+        .sort({date: 1})
         .skip((page - 1) * limit)
         .limit(limit)
         .lean()
-
+    
+    // Transformar fechas a string
+    const remindersWithStringDates = reminders.map(reminder => ({
+        ...reminder,
+        date: reminder.date.toISOString() // Formato ISO 8601
+    }))
+    
     return {
         page,
         limit,
         total,
         totalPages: Math.ceil(total / limit),
-        content: reminders,
+        content: remindersWithStringDates as any,
     }
 }
 
@@ -189,7 +193,6 @@ const checkWaterReminder = async (userId: string, reminderId: string): Promise<n
 }
 
 const createWaterReminder = async (userId: string, request: WateringReminderCreateDTO): Promise<WateringReminder> => {
-    console.log('Creating watering reminder for userId:', userId, 'with request:', {...request, userId});
     const reminder = await WateringReminderRepository.create({...request, userId})
     return reminder.toObject();
 }
