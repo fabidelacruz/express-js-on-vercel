@@ -9,6 +9,7 @@ import configService from "../../config/service/configService.js";
 import client from "../../plantid/client.js";
 import {PlantIdRequest} from "../../plantid/types.js";
 import {identificationMock} from "./mockResponses.js";
+import {WateringConfigurationRepository} from "../../watering/repository/wateringConfigurationRepository.js";
 
 interface SearchParams {
     search?: string,
@@ -42,14 +43,14 @@ const list = async (params: SearchParams, page: number = 1, limit: number = 20):
         filter.favourite = params.favourites
     }
 
-    const total = await PlantRepository.countDocuments(filter)
-
-
-    const plants = await PlantRepository.find(filter)
-        .sort({createdAt: -1})
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .lean()
+    const [total, plants] = await Promise.all([
+        PlantRepository.countDocuments(filter),
+        PlantRepository.find(filter)
+            .sort({createdAt: -1})
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .lean()
+    ])
 
     return {
         page,
@@ -71,6 +72,10 @@ const get = async (id: string, userId: string) => {
 
 const remove = async (userId: string, id: string) => {
     await PlantRepository.deleteOne({_id: id, userId: userId})
+    await Promise.all([
+        WateringReminderRepository.deleteMany({plantId: id, userId: userId}),
+        WateringConfigurationRepository.deleteMany({plantId: id, userId: userId})
+    ])
 }
 
 const identify = async (request: PlantIdentificationRequest): Promise<PlantIdentificationResponse> => {
@@ -138,8 +143,8 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
 // ********************* Plantas Favoritas y Recordatorios ****************************
 const setFavourite = async (userId: string, plantId: string): Promise<number> => {
     const result = await PlantRepository.updateOne(
-        { _id: plantId, userId: userId },
-        { $set: { favourite: true } }
+        {_id: plantId, userId: userId},
+        {$set: {favourite: true}}
     );
 
     return result.matchedCount;
@@ -147,8 +152,8 @@ const setFavourite = async (userId: string, plantId: string): Promise<number> =>
 
 const unSetFavourite = async (userId: string, plantId: string): Promise<number> => {
     const result = await PlantRepository.updateOne(
-        { _id: plantId, userId: userId },
-        { $set: { favourite: false } }
+        {_id: plantId, userId: userId},
+        {$set: {favourite: false}}
     );
 
     return result.matchedCount;
@@ -167,13 +172,13 @@ const wateringRemindersList = async (userId: string, page: number = 1, limit: nu
         .skip((page - 1) * limit)
         .limit(limit)
         .lean()
-    
+
     // Transformar fechas a string
     const remindersWithStringDates = reminders.map(reminder => ({
         ...reminder,
         date: reminder.date.toISOString() // Formato ISO 8601
     }))
-    
+
     return {
         page,
         limit,
@@ -185,8 +190,8 @@ const wateringRemindersList = async (userId: string, page: number = 1, limit: nu
 
 const checkWaterReminder = async (userId: string, reminderId: string): Promise<number> => {
     const result = await WateringReminderRepository.updateOne(
-        { _id: reminderId, userId: userId },
-        { $set: { checked: true } }
+        {_id: reminderId, userId: userId},
+        {$set: {checked: true}}
     );
 
     return result.matchedCount;
@@ -211,7 +216,7 @@ const deleteWaterReminder = async (userId: string, reminderId: string): Promise<
 }
 
 const deleteWaterRemindersOfPlant = async (userId: string, plantId: string): Promise<void> => {
-    await WateringReminderRepository.deleteMany({ plantId: plantId, userId: userId })
+    await WateringReminderRepository.deleteMany({plantId: plantId, userId: userId})
 }
 
 

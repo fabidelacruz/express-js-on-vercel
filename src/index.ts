@@ -4,6 +4,7 @@ import {connectDB} from './database/db.js'
 import {router as plantsRouter} from './router/plants.js'
 import {router as usersRouter} from './router/users.js'
 import {router as notificationsRouter} from './router/notifications.js'
+import {router as wateringRouter} from './router/watering.js'
 
 await connectDB();
 const app = express()
@@ -25,6 +26,7 @@ app.get('/healthz', (req, res) => {
 app.use('/plants', plantsRouter)
 app.use('/users', usersRouter)
 app.use('/notifications', notificationsRouter)
+app.use('/watering', wateringRouter)
 
 app.use((req, res) => res.sendStatus(404));
 
