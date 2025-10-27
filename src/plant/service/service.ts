@@ -2,7 +2,7 @@ import {PlantRepository} from "../repository/plantRepository.js";
 import {WateringReminderRepository} from "../repository/wateringReminderRepository.js";
 import {PlantCreateDTO, PlantIdentificationRequest, PlantIdentificationResponse} from "../types.js";
 import {WateringReminderCreateDTO} from "../types.js";
-import {Plant} from "../model/plant.js";
+import {Plant, PlantCatalog} from "../model/plant.js";
 import {WateringReminder} from "../model/wateringReminder.js";
 import {PagedResponse} from "../../dto/types.js";
 import configService from "../../config/service/configService.js";
@@ -219,6 +219,12 @@ const deleteWaterRemindersOfPlant = async (userId: string, plantId: string): Pro
     await WateringReminderRepository.deleteMany({plantId: plantId, userId: userId})
 }
 
+const getCatalog = async (userId: string): Promise<PlantCatalog[]> => {
+    return await PlantRepository.find({userId: userId})
+        .projection({name: 1})
+        .sort({name: 1})
+        .lean()
+}
 
 export default {
     create,
@@ -234,4 +240,5 @@ export default {
     createWaterReminder,
     deleteWaterReminder,
     deleteWaterRemindersOfPlant,
+    getCatalog,
 }

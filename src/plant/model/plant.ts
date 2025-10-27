@@ -36,3 +36,8 @@ export interface Plant {
     bestWatering?: string;
     favourite?: boolean;
 }
+
+export interface PlantCatalog {
+    id: string;
+    name: string;
+}

@@ -116,3 +116,9 @@ router.patch('/:id/favourite', async (req: AuthenticatedRequest, res) => {
     
     res.sendStatus(success > 0 ? 200 : 404);
 })
+
+router.get('/catalog', async (req: AuthenticatedRequest, res) => {
+    const list = await plantService.getCatalog(req.userId)
+
+    res.status(200).json(list)
+})
