@@ -220,8 +220,8 @@ const deleteWaterRemindersOfPlant = async (userId: string, plantId: string): Pro
 }
 
 const getCatalog = async (userId: string): Promise<PlantCatalog[]> => {
-    return await PlantRepository.find({userId: userId})
-        .projection({name: 1})
+    return PlantRepository.find({userId: userId})
+        .select({name: 1})
         .sort({name: 1})
         .lean()
 }
