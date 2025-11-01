@@ -1,6 +1,7 @@
 import {Router} from 'express'
 import {AuthenticatedRequest, authMiddleware} from "../middlewares/auth.js";
 import wateringConfigurationService from "../watering/service/wateringConfigurationService.js";
+import plantService from "../plant/service/service.js";
 
 import {WateringConfigurationDTO} from "../watering/types.js";
 
@@ -19,8 +20,19 @@ router.get('/configurations', async (req: AuthenticatedRequest, res) => {
 
     const result = await wateringConfigurationService.list({ userId: req.userId }, page, limit)
 
+    const plants = await plantService.findByIds(result.content.map(it => it.plantId), req.userId)
+    const plantsMap = new Map<string, any>()
+    plants.forEach(it => plantsMap.set((it as any)._id.toHexString(), it))
+    console.log(JSON.stringify(plantsMap))
+    const dtoContent = result.content.map(it => {
+        return {
+            ...it,
+            plantName: plantsMap.get(it.plantId.toString()).name
+        } as WateringConfigurationDTO
+    });
+
     res.json({
         ...result,
-        content: result.content.map(it => it as WateringConfigurationDTO),
+        content: dtoContent,
     });
 })

@@ -226,6 +226,15 @@ const getCatalog = async (userId: string): Promise<PlantCatalog[]> => {
         .lean()
 }
 
+const findByIds = async (ids: string[], userId: string): Promise<Plant[]> => {
+    return PlantRepository.find({
+        _id: {
+            $in: ids
+        },
+        userId: userId
+    }).lean();
+}
+
 export default {
     create,
     get,
@@ -241,4 +250,5 @@ export default {
     deleteWaterReminder,
     deleteWaterRemindersOfPlant,
     getCatalog,
+    findByIds,
 }

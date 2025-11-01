@@ -2,6 +2,7 @@ import {WateringType} from "./model/wateringConfiguration.js";
 
 export interface WateringConfigurationDTO extends WateringConfigurationCreateDTO {
     id: string;
+    plantName?: string;
 }
 
 export interface WateringConfigurationCreateDTO {
