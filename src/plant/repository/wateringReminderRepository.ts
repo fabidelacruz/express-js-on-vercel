@@ -19,6 +19,7 @@ wateringReminderSchema.set('toJSON', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
+        ret.id = ret._id.toHexString();
         delete ret._id;
     }
 });
@@ -27,6 +28,7 @@ wateringReminderSchema.set('toObject', {
     virtuals: true,
     versionKey: false,
     transform: function (doc, ret) {
+        ret.id = ret._id.toHexString();
         delete ret._id;
     }
 });

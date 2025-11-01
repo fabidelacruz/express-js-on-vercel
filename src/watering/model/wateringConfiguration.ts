@@ -1,5 +1,7 @@
 export type WateringType = 'schedules' | 'dates-frequency'
 
+export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
+
 export interface WateringConfiguration {
     id: string;
     plantId: string;
@@ -14,7 +16,7 @@ export interface WateringConfigurationDetails {
 
 export interface WateringSchedule extends WateringConfigurationDetails {
     type: 'schedules';
-    daysOfWeek: string[];
+    daysOfWeek: DayOfWeek[];
 }
 
 export interface WateringDates extends WateringConfigurationDetails {

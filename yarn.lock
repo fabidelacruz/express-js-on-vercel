@@ -1240,6 +1240,13 @@ mongodb@~6.18.0:
     bson "^6.10.4"
     mongodb-connection-string-url "^3.0.0"
 
+mongoose-lean-virtuals@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mongoose-lean-virtuals/-/mongoose-lean-virtuals-2.0.1.tgz#3046df8b39f551e72da0543835fc7d0b636e9533"
+  integrity sha512-SJ/p7TNfn5iMSd5I/trc79BuJg48/4jHlbSLlBMzCSa6ncv6CNyoyou6fipFzdVeauB1qV67qWj2Nk2DzM4iYQ==
+  dependencies:
+    mpath "^0.8.4"
+
 mongoose@^8.18.2:
   version "8.18.2"
   resolved "https://registry.npmjs.org/mongoose/-/mongoose-8.18.2.tgz"
@@ -1257,6 +1264,11 @@ mpath@0.9.0:
   version "0.9.0"
   resolved "https://registry.npmjs.org/mpath/-/mpath-0.9.0.tgz"
   integrity sha512-ikJRQTk8hw5DEoFVxHG1Gn9T/xcjtdnOKIU1JTmGjZZlg9LST2mBLmcX3/ICIbgJydT2GOc15RnNy5mHmzfSew==
+
+mpath@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.8.4.tgz#6b566d9581621d9e931dd3b142ed3618e7599313"
+  integrity sha512-DTxNZomBcTWlrMW76jy1wvV37X/cNNxPW1y2Jzd4DZkAaC5ZGsm8bfGfNOthcDuRJujXLqiuS6o3Tpy0JEoh7g==
 
 mquery@5.0.0:
   version "5.0.0"

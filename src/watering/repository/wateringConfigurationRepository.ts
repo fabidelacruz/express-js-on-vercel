@@ -1,5 +1,5 @@
 import {Schema, model} from 'mongoose';
-import {WateringType} from "../model/wateringConfiguration.js";
+import {WateringType, DayOfWeek} from "../model/wateringConfiguration.js";
 
 interface WateringConfiguration {
     id: string;
@@ -11,7 +11,7 @@ interface WateringConfiguration {
 
 interface WateringConfigurationDetails {
     type: WateringType;
-    daysOfWeek?: string[];
+    daysOfWeek?: DayOfWeek[];
     datesInterval?: number;
 }
 
@@ -23,6 +23,7 @@ const WateringDetailsSchema = new Schema<WateringConfigurationDetails>({
     },
     daysOfWeek: {
         type: [String],
+        enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
         required: function (this: WateringConfigurationDetails) {
             return this.type === 'schedules';
         },
