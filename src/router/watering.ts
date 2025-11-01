@@ -23,7 +23,7 @@ router.get('/configurations', async (req: AuthenticatedRequest, res) => {
     const plants = await plantService.findByIds(result.content.map(it => it.plantId), req.userId)
     const plantsMap = new Map<string, any>()
     plants.forEach(it => plantsMap.set((it as any)._id.toHexString(), it))
-    console.log(JSON.stringify(plantsMap))
+
     const dtoContent = result.content.map(it => {
         return {
             ...it,
