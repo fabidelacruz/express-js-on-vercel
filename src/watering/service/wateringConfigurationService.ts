@@ -36,7 +36,12 @@ const list = async (params: SearchParams, page: number = 1, limit: number = 20):
     }
 }
 
+const deleteConfig = async (id: string, userId: string) => {
+    await WateringConfigurationRepository.deleteOne({_id: id, userId: userId})
+}
+
 export default {
     create,
     list,
+    deleteConfig,
 }

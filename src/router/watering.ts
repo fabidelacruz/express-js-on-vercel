@@ -36,3 +36,9 @@ router.get('/configurations', async (req: AuthenticatedRequest, res) => {
         content: dtoContent,
     });
 })
+
+router.delete('/configurations/:id', async (req: AuthenticatedRequest, res) => {
+    await wateringConfigurationService.deleteConfig(req.params.id, req.userId)
+
+    res.sendStatus(200)
+})
