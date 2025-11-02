@@ -44,7 +44,7 @@ router.delete('/configurations/:id', async (req: AuthenticatedRequest, res) => {
 })
 
 router.put('/configurations/:id', async (req: AuthenticatedRequest, res) => {
-    await wateringConfigurationService.updateConfig(req.body, req.userId)
+    await wateringConfigurationService.updateConfig(req.params.id, req.body, req.userId)
 
     res.sendStatus(200)
 })

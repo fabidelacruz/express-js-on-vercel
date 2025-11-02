@@ -40,8 +40,8 @@ const deleteConfig = async (id: string, userId: string) => {
     await WateringConfigurationRepository.deleteOne({_id: id, userId: userId})
 }
 
-const updateConfig = async (body: WateringConfigurationDTO, userId: string) => {
-    await WateringConfigurationRepository.updateOne({_id: body.id, userId: userId}, {...body})
+const updateConfig = async (id: string, body: WateringConfigurationDTO, userId: string) => {
+    await WateringConfigurationRepository.updateOne({_id: id, userId: userId}, {...body})
 }
 
 export default {
