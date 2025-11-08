@@ -61,8 +61,10 @@ router.get('/:id', async (req: AuthenticatedRequest, res) => {
 })
 
 router.delete('/:id', async (req: AuthenticatedRequest, res) => {
-    await plantService.deleteWaterRemindersOfPlant(req.userId, req.params.id)
-    await wateringConfigurationService.deleteConfigOfPlant(req.userId, req.params.id)
+    await Promise.all([
+        plantService.deleteWaterRemindersOfPlant(req.userId, req.params.id),
+        wateringConfigurationService.deleteConfigOfPlant(req.userId, req.params.id)
+    ])
     await plantService.remove(req.userId, req.params.id)
 
     res.sendStatus(200)
