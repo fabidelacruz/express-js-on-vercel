@@ -79,7 +79,7 @@ const remove = async (userId: string, id: string) => {
 }
 
 const identify = async (request: PlantIdentificationRequest): Promise<PlantIdentificationResponse> => {
-    const useMock = Boolean(await configService.getConfigValue('plantid.mock', 'true'))
+    const useMock = Boolean(await configService.getConfigValue('plantid.mock', 'false'))
     if (useMock) {
         return identificationMock
     }
