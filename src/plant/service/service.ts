@@ -93,7 +93,7 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
     }
 
     const identificationResponse = await client.identify(plantIdRequest)
-
+    console.log("IDENTIFICATION RESPONSE: ", JSON.stringify(identificationResponse, null, 2))
     const isPlant = identificationResponse.result?.is_plant || {
         probability: 0,
         threshold: 0.5,

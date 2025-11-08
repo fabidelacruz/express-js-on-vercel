@@ -67,7 +67,10 @@ router.delete('/:id', async (req: AuthenticatedRequest, res) => {
 })
 
 router.post('/identify', async (req: AuthenticatedRequest, res) => {
+    console.log("REQUEST: ", JSON.stringify(req.body, null, 2))
+
     const results = await plantService.identify(req.body as PlantIdentificationRequest)
+    console.log("RESULTS: ", JSON.stringify(results, null, 2))
 
     res.status(200).json(results)
 })
