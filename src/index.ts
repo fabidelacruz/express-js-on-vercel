@@ -5,10 +5,13 @@ import {router as plantsRouter} from './router/plants.js'
 import {router as usersRouter} from './router/users.js'
 import {router as notificationsRouter} from './router/notifications.js'
 import {router as wateringRouter} from './router/watering.js'
+import bodyParser from "body-parser";
 
 await connectDB();
 const app = express()
 app.use(express.json())
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 app.get('/', (req, res) => {
   res.type('html').send(`
