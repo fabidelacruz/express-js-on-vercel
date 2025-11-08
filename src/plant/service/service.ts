@@ -121,6 +121,7 @@ const identify = async (request: PlantIdentificationRequest): Promise<PlantIdent
                 phylum: it.details?.taxonomy?.phylum,
                 kingdom: it.details?.taxonomy?.kingdom,
             },
+            moreInfoUrl: it.details?.url,
             watering: it.details?.watering && {
                 min: it.details?.watering?.min,
                 max: it.details?.watering?.max,
