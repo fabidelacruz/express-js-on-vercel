@@ -1,6 +1,6 @@
 import {WateringConfigurationRepository} from "../repository/wateringConfigurationRepository.js";
 import {WateringConfiguration} from "../model/wateringConfiguration.js";
-import {WateringConfigurationCreateDTO} from "../types.js";
+import {WateringConfigurationCreateDTO, WateringConfigurationDTO} from "../types.js";
 import {PagedResponse} from "../../dto/types.js";
 
 export interface SearchParams {
@@ -40,8 +40,13 @@ const deleteConfig = async (id: string, userId: string) => {
     await WateringConfigurationRepository.deleteOne({_id: id, userId: userId})
 }
 
+const updateConfig = async (id: string, body: WateringConfigurationDTO, userId: string) => {
+    await WateringConfigurationRepository.updateOne({_id: id, userId: userId}, {...body})
+}
+
 export default {
     create,
     list,
     deleteConfig,
+    updateConfig
 }
