@@ -2,6 +2,7 @@ import {Router} from 'express'
 import plantService from "../plant/service/service.js"
 import {PlantIdentificationRequest, PlantResponseDTO, WateringReminderResponseDTO} from "../plant/types.js";
 import {AuthenticatedRequest, authMiddleware} from "../middlewares/auth.js";
+import wateringConfigurationService from "../watering/service/wateringConfigurationService.js";
 
 export const router = Router()
 router.use(authMiddleware)
@@ -61,6 +62,7 @@ router.get('/:id', async (req: AuthenticatedRequest, res) => {
 
 router.delete('/:id', async (req: AuthenticatedRequest, res) => {
     await plantService.deleteWaterRemindersOfPlant(req.userId, req.params.id)
+    await wateringConfigurationService.deleteConfigOfPlant(req.userId, req.params.id)
     await plantService.remove(req.userId, req.params.id)
 
     res.sendStatus(200)

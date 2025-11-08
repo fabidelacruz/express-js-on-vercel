@@ -43,10 +43,14 @@ const deleteConfig = async (id: string, userId: string) => {
 const updateConfig = async (id: string, body: WateringConfigurationDTO, userId: string) => {
     await WateringConfigurationRepository.updateOne({_id: id, userId: userId}, {...body})
 }
+const deleteConfigOfPlant = async (userId: string, plantId: string)=> {
+    await WateringConfigurationRepository.deleteMany({plantId: plantId, userId: userId})
+}
 
 export default {
     create,
     list,
     deleteConfig,
-    updateConfig
+    updateConfig,
+    deleteConfigOfPlant,
 }
