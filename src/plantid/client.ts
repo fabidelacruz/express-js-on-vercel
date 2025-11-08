@@ -2,13 +2,13 @@ import axios from 'axios'
 import {PlantIdRequest, PlantIdResponse} from "./types.js";
 
 const client = axios.create({
-    baseURL: process.env.PLANTID_API_URL,
+    baseURL: process.env.PLANT_ID_BASE_URL,
     timeout: 30000,
 })
 
 client.interceptors.request.use(
     (config) => {
-        const token = process.env.PLANTID_API_TOKEN;
+        const token = process.env.PLANT_ID_API_KEY;
         if (token) {
             config.headers['Api-Key'] = `${token}`;
         }
