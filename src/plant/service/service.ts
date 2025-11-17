@@ -162,21 +162,9 @@ const unSetFavourite = async (userId: string, plantId: string): Promise<number> 
 }
 
 const wateringRemindersList = async (userId: string, page: number = 1, limit: number = 20): Promise<PagedResponse<WateringReminder>> => {
-    const now: Date = new Date();
-
-    const startOfToday: Date = new Date(now);
-    startOfToday.setHours(0, 0, 0, 0);
-
-    const endOfDay: Date = new Date(now);
-    endOfDay.setHours(23, 59, 59, 0);
-
     const filter: any = {
         userId: userId,
         checked: false,
-        date: {
-            $gte: startOfToday,
-            $lte: endOfDay
-        }
     }
 
     const total = await WateringReminderRepository.countDocuments(filter)
