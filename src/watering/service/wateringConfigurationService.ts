@@ -61,9 +61,10 @@ const deleteConfig = async (id: string, userId: string) => {
 }
 
 const updateConfig = async (id: string, body: WateringConfigurationDTO, userId: string) => {
-    const config = await WateringConfigurationRepository.findOneAndUpdate({_id: id, userId: userId}, {...body})
+    await WateringConfigurationRepository.updateOne({_id: id, userId: userId}, {...body})
+    const config = await WateringConfigurationRepository.findOne({_id: id, userId: userId})
 
-    await plantService.deleteWaterReminder(userId, id)
+    await plantService.deleteWaterRemindersOfPlant(userId, id)
     await createReminderByConfig(config, userId)
 }
 const deleteConfigOfPlant = async (userId: string, plantId: string)=> {
