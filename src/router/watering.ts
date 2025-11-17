@@ -9,9 +9,14 @@ export const router = Router()
 router.use(authMiddleware)
 
 router.post('/configurations', async (req: AuthenticatedRequest, res) => {
-    await wateringConfigurationService.create(req.userId, req.body)
+    const config = await wateringConfigurationService.create(req.userId, req.body)
+    const plant = await plantService.get(config.plantId, req.userId)
 
-    res.status(201).send()
+
+    res.status(201).json({
+        ...config,
+        plantName: plant.name
+    } as WateringConfigurationDTO)
 })
 
 router.get('/configurations', async (req: AuthenticatedRequest, res) => {
