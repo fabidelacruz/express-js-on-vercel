@@ -3,6 +3,7 @@ import {WateringConfiguration, WateringDates, WateringSchedule} from "../model/w
 import {WateringConfigurationCreateDTO, WateringConfigurationDTO} from "../types.js";
 import {PagedResponse} from "../../dto/types.js";
 import plantService from '../../plant/service/service.js'
+import wateringReminderService from '../../watering-reminder/service/service.js'
 import {dateAfterDays, nextDateTime} from "../../utils/dates.js"
 
 export interface SearchParams {
@@ -20,9 +21,10 @@ async function createReminderByConfig(config: WateringConfiguration, userId: str
         plantName: plant.name,
         plantImageUrl: plant.images?.[0]?.url || '',
         date: nexReminderDate,
-        checked: false
+        checked: false,
+        watering: plant.watering,
     };
-    await plantService.createWaterReminder(userId, reminder)
+    await wateringReminderService.create(userId, reminder)
 }
 
 const create = async (userId: string, request: WateringConfigurationCreateDTO): Promise<WateringConfiguration> => {
@@ -59,19 +61,19 @@ const list = async (params: SearchParams, page: number = 1, limit: number = 20):
 
 const deleteConfig = async (id: string, userId: string) => {
     const config = await WateringConfigurationRepository.findByIdAndDelete({_id: id, userId: userId})
-    await plantService.deleteWaterRemindersOfPlant(userId, config.plantId)
+    await wateringReminderService.removeRemindersOfPlant(userId, config.plantId)
 }
 
 const updateConfig = async (id: string, body: WateringConfigurationDTO, userId: string) => {
     await WateringConfigurationRepository.updateOne({_id: id, userId: userId}, {...body})
     const config = await WateringConfigurationRepository.findOne({_id: id, userId: userId})
 
-    await plantService.deleteWaterRemindersOfPlant(userId, id)
+    await wateringReminderService.removeRemindersOfPlant(userId, id)
     await createReminderByConfig(config, userId)
 }
 const deleteConfigOfPlant = async (userId: string, plantId: string)=> {
     await WateringConfigurationRepository.deleteMany({plantId: plantId, userId: userId})
-    await plantService.deleteWaterRemindersOfPlant(userId, plantId)
+    await wateringReminderService.removeRemindersOfPlant(userId, plantId)
 }
 
 const nextReminderDate = (config: WateringConfiguration) => {

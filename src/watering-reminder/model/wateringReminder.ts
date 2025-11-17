@@ -1,3 +1,6 @@
+import {Watering} from "../../plant/model/plant.js";
+
+
 export interface WateringReminder {
     id: string;
     plantId: string;
@@ -6,4 +9,5 @@ export interface WateringReminder {
     plantImageUrl: string;
     date: Date;
     checked: boolean;
+    watering?: Watering;
 }

@@ -1,9 +1,9 @@
 import {PlantRepository} from "../repository/plantRepository.js";
-import {WateringReminderRepository} from "../repository/wateringReminderRepository.js";
+//import {WateringReminderRepository} from "../../watering-reminder/repository/wateringReminderRepository.js";
 import {PlantCreateDTO, PlantIdentificationRequest, PlantIdentificationResponse} from "../types.js";
-import {WateringReminderCreateDTO} from "../types.js";
+//import {WateringReminderCreateDTO} from "../types.js";
 import {Plant, PlantCatalog} from "../model/plant.js";
-import {WateringReminder} from "../model/wateringReminder.js";
+//import {WateringReminder} from "../../watering-reminder/model/wateringReminder.js";
 import {PagedResponse} from "../../dto/types.js";
 import configService from "../../config/service/configService.js";
 import client from "../../plantid/client.js";
@@ -73,7 +73,7 @@ const get = async (id: string, userId: string) => {
 const remove = async (userId: string, id: string) => {
     await PlantRepository.deleteOne({_id: id, userId: userId})
     await Promise.all([
-        WateringReminderRepository.deleteMany({plantId: id, userId: userId}),
+        //WateringReminderRepository.deleteMany({plantId: id, userId: userId}),
         WateringConfigurationRepository.deleteMany({plantId: id, userId: userId})
     ])
 }
@@ -161,6 +161,9 @@ const unSetFavourite = async (userId: string, plantId: string): Promise<number> 
     return result.matchedCount;
 }
 
+
+
+/*
 const wateringRemindersList = async (userId: string, page: number = 1, limit: number = 20): Promise<PagedResponse<WateringReminder>> => {
     const filter: any = {
         userId: userId,
@@ -220,6 +223,7 @@ const deleteWaterReminder = async (userId: string, reminderId: string): Promise<
 const deleteWaterRemindersOfPlant = async (userId: string, plantId: string): Promise<void> => {
     await WateringReminderRepository.deleteMany({plantId: plantId, userId: userId})
 }
+*/
 
 const getCatalog = async (userId: string): Promise<PlantCatalog[]> => {
     return PlantRepository.find({userId: userId})
@@ -245,12 +249,12 @@ export default {
     remove,
     setFavourite,
     unSetFavourite,
-    wateringRemindersList,
-    getWaterReminder,
-    checkWaterReminder,
-    createWaterReminder,
-    deleteWaterReminder,
-    deleteWaterRemindersOfPlant,
+    //wateringRemindersList,
+    //getWaterReminder,
+    //checkWaterReminder,
+    //createWaterReminder,
+    //deleteWaterReminder,
+    //deleteWaterRemindersOfPlant,
     getCatalog,
     findByIds,
 }

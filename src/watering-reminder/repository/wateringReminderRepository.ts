@@ -1,5 +1,11 @@
 import mongoose from "mongoose";
 import {WateringReminder} from "../model/wateringReminder.js";
+import {Watering} from "../../plant/model/plant.js";
+
+const wateringSchema = new mongoose.Schema<Watering>({
+    min: {type: Number, required: true, unique: false},
+    max: {type: Number, required: true, unique: false},
+});
 
 const wateringReminderSchema = new mongoose.Schema<WateringReminder>({
     plantId: {type: String, required: true, unique: false},
@@ -8,6 +14,7 @@ const wateringReminderSchema = new mongoose.Schema<WateringReminder>({
     plantImageUrl: {type: String, required: true, unique: false},
     date: {type: Date, required: true, unique: false},
     checked: {type: Boolean, required: true, unique: false},
+    watering: {type: wateringSchema, required: false},
 });
 
 

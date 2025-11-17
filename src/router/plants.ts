@@ -1,8 +1,9 @@
 import {Router} from 'express'
 import plantService from "../plant/service/service.js"
-import {PlantIdentificationRequest, PlantResponseDTO, WateringReminderResponseDTO} from "../plant/types.js";
+import {PlantIdentificationRequest, PlantResponseDTO} from "../plant/types.js";
 import {AuthenticatedRequest, authMiddleware} from "../middlewares/auth.js";
 import wateringConfigurationService from "../watering/service/wateringConfigurationService.js";
+import wateringReminderService from "../watering-reminder/service/service.js";
 
 export const router = Router()
 router.use(authMiddleware)
@@ -62,7 +63,7 @@ router.get('/:id', async (req: AuthenticatedRequest, res) => {
 
 router.delete('/:id', async (req: AuthenticatedRequest, res) => {
     await Promise.all([
-        plantService.deleteWaterRemindersOfPlant(req.userId, req.params.id),
+        wateringReminderService.removeRemindersOfPlant(req.userId, req.params.id),
         wateringConfigurationService.deleteConfigOfPlant(req.userId, req.params.id)
     ])
     await plantService.remove(req.userId, req.params.id)
@@ -79,6 +80,8 @@ router.post('/identify', async (req: AuthenticatedRequest, res) => {
     res.status(200).json(results)
 })
 
+
+/*
 
 router.get('/watering-reminders/list', async (req: AuthenticatedRequest, res) => {
     const page = (req.query.page && parseInt(req.query.page.toString())) || 1
@@ -116,6 +119,7 @@ router.delete('/watering-reminders/:id', async (req: AuthenticatedRequest, res) 
     await plantService.deleteWaterReminder(req.userId, req.params.id)
     res.sendStatus(200)
 })
+*/
 
 router.patch('/:id/favourite', async (req: AuthenticatedRequest, res) => {
     const { favourite } = req.body;
