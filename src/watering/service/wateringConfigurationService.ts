@@ -13,6 +13,8 @@ async function createReminderByConfig(config: WateringConfiguration, userId: str
     const plant = (await plantService.get(config.plantId, userId))
 
     const nexReminderDate = nextReminderDate(config);
+    nexReminderDate.setHours(nexReminderDate.getHours() + 3);
+
     const reminder = {
         plantId: config.plantId,
         plantName: plant.name,
